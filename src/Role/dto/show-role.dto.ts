@@ -1,6 +1,6 @@
 export interface IShowRoleDto{
     roleId:       string;
-    puntutation: number;
+    puntuation: number;
     description: string;
     imageURL:    string;
     creationDate: string;
@@ -11,7 +11,7 @@ export interface IShowRoleDto{
 export class ShowRoleDto implements IShowRoleDto{
     roleId: string;
     type: string;
-    puntutation: number;
+    puntuation: number;
     description: string;
     imageURL:    string;
     creationDate: string;

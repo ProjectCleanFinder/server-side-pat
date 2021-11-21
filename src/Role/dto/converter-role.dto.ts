@@ -9,7 +9,7 @@ export class RoleDtoConverter {
         srd.description = _role.description;
         srd.creationDate = _role.creationDate;
         srd.updateDate = _role.updateDate;
-        srd.puntutation = _role.puntutation;
+        srd.puntuation = _role.puntuation;
         return srd;
     }
 

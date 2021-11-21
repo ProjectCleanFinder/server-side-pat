@@ -14,7 +14,7 @@ export class ExpandRoleUser implements IShowRoleDto, IShowUserDto{
     username: string;
     alias: string;
     email: string;
-    puntutation: number;
+    puntuation: number;
     description: string;
     imageURL: string;
     creationDate: string;
@@ -42,7 +42,7 @@ class RoleBuilder implements Builder<CreateRoleDto, Role, User>{
         nRole.imageURL = role.imageURL || DEFAULT_IMAGE;
         nRole.description = role.description;
         nRole.type = role.type;
-        nRole.puntutation = 0;
+        nRole.puntuation = 0;
         nRole.userId = user.id;
         nRole.creationDate = new Date().toDateString();
         nRole.updateDate = new Date().toDateString();
@@ -71,7 +71,7 @@ export class ClientShowDataBuilder{
         nShowRoleDto.description = role.description;
         nShowRoleDto.creationDate = role.creationDate;
         nShowRoleDto.imageURL = role.imageURL || DEFAULT_IMAGE;
-        nShowRoleDto.puntutation = role.puntutation;
+        nShowRoleDto.puntuation = role.puntuation;
         nShowRoleDto.updateDate = role.updateDate;
         nShowRoleDto.type = role.type;
         return nShowRoleDto;
@@ -98,7 +98,7 @@ export class ClientShowDataBuilder{
         nExpandRoleUser.description = role.description;
         nExpandRoleUser.imageURL = role.imageURL || DEFAULT_IMAGE;
         nExpandRoleUser.roleId = role.id;
-        nExpandRoleUser.puntutation = 0;
+        nExpandRoleUser.puntuation = 0;
         nExpandRoleUser.creationDate = new Date().toDateString();
         nExpandRoleUser.updateDate = new Date().toDateString();
 

@@ -6,7 +6,7 @@ export class Role{
     id: string;
 
     @Column()
-    puntutation: number;
+    puntuation: number;
 
     @Column()
     description: string;
