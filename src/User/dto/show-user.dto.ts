@@ -5,7 +5,7 @@ export interface IShowUserDto{
     email:    string;
 }
 
-export class ShowUserDto{
+export class ShowUserDto implements IShowUserDto{
     userId:   string;
     username: string;
     alias:    string;

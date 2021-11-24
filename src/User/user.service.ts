@@ -1,14 +1,13 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { ClientResponse } from '../utils/client-response.dto';
 import { StatusCodes } from '../utils/utils';
-import { UserDtoConverter } from './dto/converter-user.dto';
-import { ShowUserDto } from './dto/show-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ClientShowDataBuilder, EntityBuilder, ExpandRoleUser } from './builders/user-role.builder';
 import { Role } from 'src/Role/role.entity';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class UserService {
@@ -72,7 +71,7 @@ export class UserService {
     return response;
   }
 
-  async getUser(id: String) : Promise<ClientResponse<ExpandRoleUser>>{
+  async findUser(id: String) : Promise<ClientResponse<ExpandRoleUser>>{
     const response = new ClientResponse<ExpandRoleUser>();
     const gUser = await this.userRepository.findByIds([id]);
     if(!gUser){
@@ -101,6 +100,31 @@ export class UserService {
 
     response.statusCode = StatusCodes.OK;
     response.data = ClientShowDataBuilder.constructExpandRoleUser(gUser[0], gRole);
+    return response;
+  }
+
+  async getUser(user: LoginUserDto) : Promise<ClientResponse<ExpandRoleUser>>{
+    const response = new ClientResponse<ExpandRoleUser>();
+    const gUser = await this.userRepository.findOne({
+      where: {
+        username: user.username,
+        password: user.password
+      }
+    });
+    if(!gUser){
+      response.statusCode = StatusCodes.NOT_FOUND;
+      response.error = "error al encontrar el usuario";
+      return response;
+    }
+
+    const gRole = await this.roleRepository.findOne({
+      where: {
+        userId: gUser.id
+      }
+    })
+
+    response.statusCode = StatusCodes.OK;
+    response.data = ClientShowDataBuilder.constructExpandRoleUser(gUser, gRole);
     return response;
   }
 }
