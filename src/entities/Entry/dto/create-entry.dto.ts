@@ -1,5 +1,5 @@
 
-export interface ICreatePosterDto{
+export interface ICreateEntryDto{
     title: string;
     description: string;
     direction: string;
@@ -7,7 +7,7 @@ export interface ICreatePosterDto{
     userCreatorId: string;
 }
 
-export class CreatePosterDto implements ICreatePosterDto{
+export class CreateEntryDto implements ICreateEntryDto{
     title: string;
     description: string;
     direction: string;

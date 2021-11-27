@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Poster } from './Poster/poster.entity';
-import { PosterModule } from './Poster/poster.module';
-import { Role } from './Role/role.entity';
-import { User } from './User/user.entity';
-import { UsersModule } from './User/user.module';
+import { Entry } from './entities/Entry/entry.entity';
+import { Role } from './entities/Role/role.entity';
+import { RoleModule } from './entities/Role/role.module';
+import { User } from './entities/User/user.entity';
+import { UserModule } from './entities/User/user.module';
 
 @Module({
   imports: [
@@ -17,12 +17,12 @@ import { UsersModule } from './User/user.module';
       username: 'root',
       password: 'diseñodepatrones',
       database: 'dp_server',
-      entities: [User, Role, Poster],
+      entities: [User, Role, Entry],
       synchronize: true,
       dropSchema: true,
     }),
-    UsersModule,
-    PosterModule 
+    UserModule,
+    RoleModule
   ],
   controllers: [AppController],
   providers: [AppService],
