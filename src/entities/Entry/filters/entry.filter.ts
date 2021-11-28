@@ -3,7 +3,8 @@ import { IShowEntryDto, ShowEntryDto } from "../dto/show-entry.dto";
 import { Entry } from "../entry.entity";
 
 export enum EntryFilters{
-    SHOW
+    SHOW,
+    TAKED
 }
 
 export class EntryFilter implements Filter<Entry>{
@@ -26,10 +27,19 @@ export class EntryFilter implements Filter<Entry>{
         return fUser;
     }
 
+    static isTakedFilter(ent: Entry): ShowEntryDto{
+        if(ent.userInterestedId == null){
+            return null;
+        }
+        
+        return EntryFilter.showFilter(ent);
+    }
+
     filter(ent: Entry, aux: EntryFilters): IShowEntryDto {
         
         switch(aux){
             case EntryFilters.SHOW: return EntryFilter.showFilter(ent);
+            case EntryFilters.TAKED: return EntryFilter.isTakedFilter(ent);
         }
 
     }

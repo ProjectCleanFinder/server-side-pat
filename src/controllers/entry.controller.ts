@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { CreateEntryDto } from "src/entities/Entry/dto/create-entry.dto";
 import { ShowEntryDto } from "src/entities/Entry/dto/show-entry.dto";
+import { TakeEntryDto } from "src/entities/Entry/dto/take-entry.dto";
 import { Entry } from "src/entities/Entry/entry.entity";
 import { EntryrService } from "src/entities/Entry/entry.service";
 import { EntryFilters } from "src/entities/Entry/filters/entry.filter";
@@ -27,8 +28,8 @@ export class EntryController implements Filterable<Entry>{
         const entries = await this.entryService.getAllEntries();
         
         response.data = entries.map(function(entry){
-            return this.filter.filter(entry, EntryFilters.SHOW);
-        },this);
+            return this.filter.filter(entry, EntryFilters.TAKED);
+        },this).filter(x => x!=null);
         response.statusCode = StatusCodes.OK;
 
         return response;
@@ -66,6 +67,25 @@ export class EntryController implements Filterable<Entry>{
             return response;
         }
 
+    }
+
+    @Put('/update')
+    async takeEntry(@Body() takeEntryDto: TakeEntryDto) : Promise<ClientResponse<ShowEntryDto>>{
+        const response = new ClientResponse<ShowEntryDto>();
+
+        try{
+            await this.userService.findUser(takeEntryDto.userInterestedId);
+
+            const entry = await this.entryService.takeEntry(takeEntryDto);
+
+            response.data = this.filter.filter(entry, EntryFilters.SHOW);
+            response.statusCode = StatusCodes.OK;
+            return response;
+        }catch(e){
+            response.error = e.message;
+            response.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+            return response;
+        }
     }
 
     

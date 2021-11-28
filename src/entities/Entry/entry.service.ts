@@ -4,7 +4,9 @@ import { Buildable, EntityBuilder } from "src/utils/builders/entity-builder";
 import { Entities } from "src/utils/enum-entities";
 import { Repository } from "typeorm";
 import { CreateEntryDto } from "./dto/create-entry.dto";
+import { TakeEntryDto } from "./dto/take-entry.dto";
 import { Entry } from "./entry.entity";
+import { EntryPrototype } from "./prototype/entry.take";
 
 @Injectable()
 export class EntryrService implements Buildable<Entry>{
@@ -24,6 +26,18 @@ export class EntryrService implements Buildable<Entry>{
         if(!entries) throw new Error('error de entrada ala base de datos');
 
         return entries;
+    }
+
+    async findEntry(entryId: String): Promise<Entry>{
+        const entry = await this.entryRepository.findOne({
+            where:{
+                id: entryId
+            }
+        });
+
+        if(!entry) throw new Error('no se encontro el post');
+
+        return entry;
     }
 
     async getMyEntries(userId: String) : Promise<Entry[]>{
@@ -59,6 +73,29 @@ export class EntryrService implements Buildable<Entry>{
         const savedEntry = await this.entryRepository.save(nEntry);
 
         if(!savedEntry) throw new Error('error de entrada ala base de datos');
+
+        return savedEntry;
+    }
+
+    async takeEntry(uEntry: TakeEntryDto) : Promise<Entry>{
+
+        if(!uEntry.entryId || !uEntry.userInterestedId) throw new Error('"Error en los datos');
+
+        const entry = await this.entryRepository.findOne({
+            where:{
+                id: uEntry.entryId
+            }
+        });
+
+        if(!entry) throw new Error('no se encontro el post');
+
+        const nEntry: Entry = EntryPrototype.takeEntry(entry, uEntry); 
+
+        const savedEntry = this.entryRepository.save({
+            ...nEntry
+        })
+
+        if(!entry) throw new Error('error al guardad el post en la base de datos');
 
         return savedEntry;
     }
