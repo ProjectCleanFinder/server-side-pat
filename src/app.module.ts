@@ -4,9 +4,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Entry } from './entities/Entry/entry.entity';
 import { Role } from './entities/Role/role.entity';
-import { RoleModule } from './entities/Role/role.module';
 import { User } from './entities/User/user.entity';
-import { UserModule } from './entities/User/user.module';
+import { EntryModule } from './modules/entry.module';
+import { UserModule } from './modules/user.module';
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { UserModule } from './entities/User/user.module';
       dropSchema: true,
     }),
     UserModule,
-    RoleModule
+    EntryModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -4,6 +4,7 @@ import { ShowEntryDto } from "src/entities/Entry/dto/show-entry.dto";
 import { Entry } from "src/entities/Entry/entry.entity";
 import { EntryrService } from "src/entities/Entry/entry.service";
 import { EntryFilters } from "src/entities/Entry/filters/entry.filter";
+import { UserService } from "src/entities/User/user.service";
 import { ClientResponse } from "src/utils/client-response.dto";
 import { Entities } from "src/utils/enum-entities";
 import { EntityFilter, Filterable } from "src/utils/filters/entity-filter";
@@ -13,7 +14,8 @@ import { StatusCodes } from "src/utils/utils";
 export class EntryController implements Filterable<Entry>{
     filter: EntityFilter<Entry>;
     constructor(
-        private readonly entryService: EntryrService
+        private readonly entryService: EntryrService,
+        private readonly userService: UserService
     ) {
         this.filter = new EntityFilter<Entry>(Entities.ENTRY);
     }
@@ -46,15 +48,25 @@ export class EntryController implements Filterable<Entry>{
         return response;
     }
 
-    @Post('/me/')
+    @Post('/register')
     async addEntry(@Body() createEntryDto: CreateEntryDto) : Promise<ClientResponse<ShowEntryDto>>{
         const response = new ClientResponse<ShowEntryDto>();
 
-        const nEntry = await this.entryService.addEntry(createEntryDto);
+        try{
+            await this.userService.findUser(createEntryDto.userCreatorId);
+            
+            const nEntry = await this.entryService.addEntry(createEntryDto);
 
-        response.data = this.filter.filter(nEntry, EntryFilters.SHOW); 
-        response.statusCode = StatusCodes.OK;
+            response.data = this.filter.filter(nEntry, EntryFilters.SHOW); 
+            response.statusCode = StatusCodes.OK;
+            return response;
+        }catch(e){
+            response.error = e.message; 
+            response.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+            return response;
+        }
 
-        return response;
     }
+
+    
 }

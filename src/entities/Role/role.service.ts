@@ -25,9 +25,10 @@ export class RoleService implements Buildable<Role>{
             }   
         })
 
-        if(!existRole) return null;
+        if(existRole) return null;
 
         const nRole = this.builder.build(role);
+
         const savedRole = await this.roleRepository.save(nRole);
 
         return savedRole;

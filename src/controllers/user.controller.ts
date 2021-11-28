@@ -19,7 +19,7 @@ export class UserController implements Filterable<User>{
   }
   filter: EntityFilter<User>;
 
-  @Get('/all' )
+  @Get('/all')
   async getUsers() : Promise<ClientResponse<ShowUserDto[]>> {
     const response = new ClientResponse<ShowUserDto[]>();
 
