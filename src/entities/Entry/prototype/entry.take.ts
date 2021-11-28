@@ -6,6 +6,7 @@ export class EntryPrototype{
         const nEntry: Entry = Object.prototype.constructor(ent);
         console.log(nEntry);
         nEntry.userInterestedId = takeEntryDto.userInterestedId;
+        nEntry.status = "procesed";
         return nEntry;
     }
 }
