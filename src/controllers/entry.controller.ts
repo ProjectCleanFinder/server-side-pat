@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Post, Put } from "@nestjs/common";
 import { CreateEntryDto } from "src/entities/Entry/dto/create-entry.dto";
 import { ShowEntryDto } from "src/entities/Entry/dto/show-entry.dto";
 import { TakeEntryDto } from "src/entities/Entry/dto/take-entry.dto";
@@ -69,7 +69,7 @@ export class EntryController implements Filterable<Entry>{
 
     }
 
-    @Put('/update')
+    @Patch('/update')
     async takeEntry(@Body() takeEntryDto: TakeEntryDto) : Promise<ClientResponse<ShowEntryDto>>{
         const response = new ClientResponse<ShowEntryDto>();
 
